@@ -6,12 +6,13 @@ public class Player
 {
 	
 	private State type;
-	private int wins, games;
+	private int wins, defeats,games;
 	
 	public Player(State type){
 		this.setType(type);
 		this.wins = 0;
 		this.games = 0;
+		this.defeats = 0;
 	}
 
 	public State getType()
@@ -43,5 +44,12 @@ public class Player
 	{
 		this.games = games;
 	}
-	
+
+	public int getDefeats() {
+		return defeats;
+	}
+
+	public void setDefeats(int defeats) {
+		this.defeats = defeats;
+	}
 }

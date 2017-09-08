@@ -6,7 +6,10 @@ import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import de.paul.Genetic.Response;
+import de.paul.Player.GeneticPlayer;
 import de.paul.Player.MinMaxPlayer;
+import de.paul.Simulation.Simulation;
 import de.paul.TicTacGame.Board;
 import de.paul.TicTacGame.GameState;
 import de.paul.TicTacGame.State;
@@ -36,13 +39,20 @@ public class GuiFrame
 		window.frame.setVisible(true);
 		window.frame.setTitle("Hey");
 		MinMaxPlayer pMnMx = new MinMaxPlayer(State.O);
+        GeneticPlayer gp = Simulation.trainAndSimulateGenetic(100, 3000);
 		while(window.getBoard().getCurrenState()==GameState.Running){
+		    /*
 			if(window.getBoard().getNextPlayer()==pMnMx.getType()){
 				pMnMx.minMax(window.getBoard(), 0);
 				int[] move = pMnMx.choice;
 				window.getBoard().move(pMnMx.getType(), move[0], move[1]);
 				window.getButton(window.translateToBtnNumber(move[0], move[1])).setText(window.getBoard().getState(move[0], move[1]).toString());
-			}
+			}*/
+		    if(window.getBoard().getNextPlayer()==gp.getType()){
+		        int[] move = gp.getResponseMove(window.getBoard());
+		        window.getBoard().move(gp.getType(), move[0], move[1]);
+                window.getButton(window.translateToBtnNumber(move[0], move[1])).setText(window.getBoard().getState(move[0], move[1]).toString());
+            }
 		}
 	
 	}
