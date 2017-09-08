@@ -37,6 +37,13 @@ public class Population
     	return counter/populationSize()*200;
     }
 
+    public double getAverageFittnes(){
+        double counter = 0;
+        for(int i=0;i<populationSize();i++){
+            counter+=players[i].getFitness();
+        }
+        return counter/populationSize();
+    }
     
     // Gets the best tour in the population
     public GeneticPlayer getFittest() {

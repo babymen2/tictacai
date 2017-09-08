@@ -3,6 +3,7 @@ package de.paul.Simulation;
 import de.paul.Genetic.Algorithm;
 import de.paul.Genetic.FitnessCalculator;
 import de.paul.Genetic.Population;
+import de.paul.Player.GeneticPlayer;
 import de.paul.Player.MinMaxPlayer;
 import de.paul.Player.RandomPlayer;
 import de.paul.TicTacGame.Board;
@@ -114,7 +115,7 @@ public class Simulation
 		System.out.println("Ties: " + (amount-(pX.getWins()+pO.getWins())));
 		
 	}
-	public static void trainAndSimulateGenetic(int popSize,int generations){
+	public static GeneticPlayer trainAndSimulateGenetic(int popSize, int generations){
 		Population pop = new Population(popSize, State.O);
 		FitnessCalculator.calculateFitness(pop);
 		System.out.println("First Generation, Fittest Win Rate: ");
@@ -126,10 +127,11 @@ public class Simulation
 			pop.getFittest().setWins(0);
 			pop = Algorithm.evolvePopulation(pop);
 			avgWins[i] = pop.getAverageWins();
-			System.out.println(i + " - " + avgWins[i]);
+			System.out.println(i + " - " + pop.getAverageFittnes()*100);
 		}
 		System.out.println("Last Generation, Fittest Win Rate: ");
 		System.out.println(((pop.getFittest().getWins()*1.0)/(pop.getFittest().getGames()*1.0))*100+"%");
+		return pop.getFittest();
 	}
 	
 	public static void simulateRandomVsRandom(int amount){
