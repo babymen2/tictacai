@@ -27,15 +27,20 @@ public class Simulation
 */
 		//System.out.println(b.getPossibleMoves().size());
 
-		//b.move(State.X, 0, 0);
-		//b.move(State.O, 1, 1);
+		b.move(State.X, 0, 0);
+		b.move(State.O, 0, 1);
 		//b.move(State.X, 1, 2);
 
 		MinMaxPlayer o = new MinMaxPlayer(State.O);
 		MinMaxPlayer x = new MinMaxPlayer(State.X);
 		//x.bestRespones(b);
 
-		simulateMinMaxvsRandom(2000);
+		b.getPossibleRotations();
+
+		for(Board b2 : b.getPossibleRotations())
+			System.out.println(b2);
+
+		//simulateMinMaxvsRandom(2000);
 		
 	}
 	
