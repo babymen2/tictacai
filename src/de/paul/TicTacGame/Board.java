@@ -136,7 +136,66 @@ public class Board
 		if(countX>countO)return State.O;
 		return State.X;
 	}
-	
+
+
+	private Board mirrorMRML(Board old) {
+		Board copied = new Board(old.getSize());
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+				if (!old.isEmpty(x, y)) {
+					copied.move(old.getState(x, y), x, old.getSize() - 1 - y);
+				}
+			}
+		}
+		return copied;
+	}
+
+	private Board mirrorBLUR(Board old) {
+		Board copied = new Board(old.getSize());
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+				if (!old.isEmpty(x, y)) {
+					copied.move(old.getState(x, y), old.getSize() - 1 - y, old.getSize() - 1 - x);
+				}
+			}
+		}
+		return copied;
+	}
+
+
+	public ArrayList<Board> getPossibleRotations() {
+		ArrayList<Board> boards = new ArrayList<Board>();
+
+		boards.add(this.copy());
+		//Drehung#
+
+		for (int i = 0; i < 3; i++) {
+			Board curr = boards.get(boards.size() - 1);
+			Board newB = mirrorMRML(curr);
+			boards.add(mirrorBLUR(newB));
+		}
+
+		//spiegel
+		for (int i = 0; i < 4; i++) {
+			Board curr = boards.get(i);
+			Board newB = mirrorBLUR(curr);
+			boards.add(newB);
+		}
+		return boards;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int y = 0; y < this.size; y++) {
+			for (int x = 0; x < this.size; x++)
+				sb.append(getState(x, y) + ", ");
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+
+
 	public int getSize(){
 		return this.size;
 	}
