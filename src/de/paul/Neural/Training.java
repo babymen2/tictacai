@@ -23,13 +23,47 @@ public class Training {
         this.trainingDataOut.add(expectedOutputs);
     }
 
+    //This method was heavily inspired by https://github.com/vivin/DigitRecognizingNeuralNetwork  (I'm just to dump to come up with this by myself ;) )
     public double backpropagate(){
+        //Iterating through all training sets
         for(int i = 0; i < trainingDataIn.size();i++){
             double[] input = trainingDataIn.get(i);
             double[] expectedOutput = trainingDataOut.get(i);
 
             network.setInputs(input);
+            double[] output = network.getOutput();
 
+            //iterating through all layers (except the input layer, bc why would you?!)
+            for(int layer = network.getLayerCount(); layer > 0; layer--){
+                //iterating through all neurons of this layer
+                for(int neuronCounter = 0; neuronCounter < network.getNetworkStructure()[layer]; neuronCounter ++){
+                    Neuron neuron = network.getLayers().get(layer).get(neuronCounter);
+                    double neuronError = 0;
+                    //check if neuron is an output neuron
+                    if(layer==network.getLayerCount()){
+                        //calculating the error of the output neuron;
+                        neuronError = neuron.derivate(neuron.getValue())*expectedOutput[neuronCounter]-output[neuronCounter];
+                    }else{
+                        //We are dealing with a hidden layer! Yeay
+
+                        double sum = 0;
+                        neuronError = neuron.derivate(neuron.getValue());
+
+                        //Iterate through Neurons of the next Layer (next meaning closer to output), this is needed for calculating
+                        //the error of our currently viewed neuron (neuron) in regard to the complete output error
+                        for(Neuron upperNeuron : network.getLayers().get(layer++)){
+
+                        }
+                    }
+
+                    //setting the neuron error
+                    neuron.setError(neuronError);
+
+                }
+
+
+
+            }
         }
         return 1.0;
     }
