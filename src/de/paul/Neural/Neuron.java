@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Neuron {
 
-    private double value;
+    private double value, error;
     private HashMap<Neuron, Synapse> outgoingSynapses;
     private ArrayList<Synapse> incomingSynapses;
 
@@ -73,5 +73,13 @@ public class Neuron {
 
     public void setIncomingSynapses(ArrayList<Synapse> incomingSynapses) {
         this.incomingSynapses = incomingSynapses;
+    }
+
+    public double getError() {
+        return error;
+    }
+
+    public void setError(double error) {
+        this.error = error;
     }
 }
