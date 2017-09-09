@@ -28,22 +28,10 @@ public class Training {
             double[] input = trainingDataIn.get(i);
             double[] expectedOutput = trainingDataOut.get(i);
 
+            network.setInputs(input);
 
         }
         return 1.0;
-    }
-
-    public double calculateAverageError(){
-        ArrayList<Double> errors = new ArrayList<Double>();
-        for(int trainingI = 0; trainingI < trainingDataIn.size(); trainingI++){
-            network.calculateOutputs(trainingDataIn.get(trainingI));
-            for(int outputI = 0; outputI < network.getNetworkStructure()[network.getLayerCount()];outputI++){
-                errors.add(trainingDataOut.get(trainingI)[outputI]-network.getLayers().get(network.getLayerCount()).get(outputI).getValue());
-            }
-        }
-        double sum = 0;
-        for(double d : errors)sum+=d;
-        return sum/(errors.size()*1.0);
     }
 
 

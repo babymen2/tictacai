@@ -23,19 +23,24 @@ public class Network {
         initWeights();
     }
 
-    public void calculateOutputs(double[] inputValues){
-        if(inputValues.length!=networkStructure[0])return;
-        //Setting Values for Inputs
-        for(int i = 0; i<layers.get(0).size();i++){
-            layers.get(0).get(i).setValue(inputValues[i]);
-        }
 
-        for(int layer = 0; layer<networkStructure.length-1;layer++){
+    public double[] getOutput(){
+        double[] outputs = new double[this.getNetworkStructure()[this.getLayerCount()]];
+        for(int layer = 1; layer<networkStructure.length;layer++){
             for(Neuron n : layers.get(layer)){
-                for(Neuron nNextLayer : layers.get(layer+1)){
-                    nNextLayer.setValue(n.getOutputValue(nNextLayer, n.getValue()));
-                }
+                n.setValue(n.sigmoid(n.getWeightedSum()));
             }
+        }
+        for(int neuron = 0; neuron < this.getNetworkStructure()[this.getLayerCount()]; neuron ++){
+            outputs[neuron] = this.getLayers().get(this.getLayerCount()).get(neuron).getValue();
+        }
+        return outputs;
+    }
+
+    public void setInputs(double[] input){
+        if(input.length!=networkStructure[0])return;
+        for(int i = 0; i<input.length;i++){
+            layers.get(0).get(i).setValue(input[i]);
         }
     }
 
@@ -44,7 +49,10 @@ public class Network {
         for(int layer = 0; layer<networkStructure.length-1;layer++){
             for(Neuron n : layers.get(layer)){
                 for(Neuron nNextLayer : layers.get(layer+1)){
-                    n.addOutgoing(nNextLayer, r.nextDouble());
+                    Synapse syn = new Synapse(n, nNextLayer);
+                    syn.setWeight(r.nextDouble());
+                    n.addOutgoing(syn);
+                    nNextLayer.addIncoming(syn);
                 }
             }
         }
