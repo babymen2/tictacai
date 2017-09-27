@@ -38,12 +38,12 @@ public class GuiFrame {
         GuiFrame window = new GuiFrame();
         window.frame.setVisible(true);
         window.frame.setTitle("Hey");
-        PercentPlayer pPerc = new PercentPlayer(State.X);
-        RandomPlayer pX = new RandomPlayer(State.O);
+        PercentPlayer pPerc = new PercentPlayer(State.O);
+        RandomPlayer pX = new RandomPlayer(State.X);
 
         while (window.getBoard().getCurrenState() == GameState.Running) {
 
-            int sleepTIme = 100;
+            int sleepTIme = 10;
 
             try {
                 Thread.sleep(sleepTIme);
@@ -74,6 +74,25 @@ public class GuiFrame {
 
 
             if(window.getBoard().getCurrenState() != GameState.Running){
+
+		        Color resCol;
+
+		        if(window.getBoard().getCurrenState() == GameState.Win){
+		            resCol = Color.GREEN;
+                } else {
+		            resCol = Color.RED;
+                }
+
+                for(int i = 0; i < Math.pow(window.getBoard().getSize(),2); i++){
+                    window.getButton(i).setBackground(resCol);
+                }
+
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
 		        window.frame.dispose();
                 window = new GuiFrame();
                 window.frame.setVisible(true);
