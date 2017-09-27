@@ -28,13 +28,20 @@ public class PercentPlayer extends Player {
             winTieLoss[i] = calcOutcomes(copied, getType() == State.O ? State.X : State.O);
         }
 
-        double max = Double.MAX_VALUE;
-        int[] current = new int[2];
+        int max = 0;
+        int[] current = moves.get(max);
 
         for (int i = 0; i < moves.size(); i++) {
-            if (winTieLoss[i][2] <= max) {
-                max = winTieLoss[i][2];
-                current = moves.get(i);
+            if (winTieLoss[i][2] <= winTieLoss[max][2]) {
+                if(winTieLoss[i][2] == winTieLoss[max][2]){
+                    if (winTieLoss[i][0] > winTieLoss[max][0]){
+                        max = i;
+                        current = moves.get(i);
+                    }
+                } else {
+                    max = i;
+                    current = moves.get(i);
+                }
             }
         }
         return current;
