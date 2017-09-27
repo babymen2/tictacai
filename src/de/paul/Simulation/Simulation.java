@@ -11,6 +11,7 @@ import de.paul.TicTacGame.Board;
 import de.paul.TicTacGame.GameState;
 import de.paul.TicTacGame.State;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Simulation {
@@ -87,6 +88,7 @@ public class Simulation {
             }
             if (b.getCurrenState() != GameState.Tie) {
                 if (b.getWinner() == pX.getType()) {
+
                     pX.setWins(pX.getWins() + 1);
                 }
                 if (b.getWinner() == pO.getType()) {
@@ -108,24 +110,29 @@ public class Simulation {
 
         for (int i = 0; i < amount; i++) {
             Board b = new Board(3);
+            ArrayList<Board> history = new ArrayList<Board>();
             while (b.getCurrenState() == GameState.Running && b.getWinner() == null) {
                 int[] pxRT = pX.getRandomTile(b);
                 b.move(pX.getType(), pxRT[0], pxRT[1]);
+                history.add(b.copy());
                 if (b.getCurrenState() == GameState.Running && b.getWinner() == null) {
                     int[] poRT = pO.bestMove(b);
                     b.move(pO.getType(), poRT[0], poRT[1]);
+                    history.add(b.copy());
                 }
             }
             if (b.getCurrenState() != GameState.Tie) {
                 if (b.getWinner() == pX.getType()) {
                     pX.setWins(pX.getWins() + 1);
+                    for(Board bOld: history)
+                        System.out.println(bOld);
                 }
                 if (b.getWinner() == pO.getType()) {
                     pO.setWins(pO.getWins() + 1);
                 }
             }
-            if(i % (amount / 100 + 1) == 0)
-                System.out.println("---- BOARD RESET-----");
+            //if(i % (amount / 100 + 1) == 0)
+             //   System.out.println("---- BOARD RESET-----");
         }
         System.out.println("Games Played: " + amount);
         System.out.println("Wins X:" + pX.getWins());
